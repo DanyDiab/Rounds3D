@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CardPicking : MonoBehaviour{
-    int numCards;
+    [SerializeField] int numCards;
 
     List<GameObject> cards;
 
-    GameObject testCard;
+    [SerializeField] GameObject testCard;
     [SerializeField] GameObject parent;
 
 
@@ -15,7 +15,14 @@ public class CardPicking : MonoBehaviour{
     }
 
     void Start(){
+        cards = new List<GameObject>();
+        populateDisplay();
+    }
 
+    [ContextMenu("Populate Display")]
+    void populateDisplay(){
+        populateCards();
+        displayCards();
     }
 
     void populateCards(){
