@@ -32,8 +32,25 @@ public class CardPicking : MonoBehaviour{
     }
 
     void displayCards(){
+
+        Vector2 centerScreen = new Vector2(Screen.width / 2.0f, Screen.height / 2.0f);
+
+        Vector2 spacingBetween = new Vector2(30.0f, 0.0f);
+
+        Vector2 cardSize = new Vector2(200.0f, 300.0f);
+
+        float xWidth = cardSize.x + spacingBetween.x;
+
+        Vector2 spacing = new Vector2(xWidth, 0);
+
+        Vector2 startingPos = centerScreen - (spacing * (cards.Count / 2));
+ 
+        int idx = 0;
         foreach(GameObject card in cards){
-            Instantiate(card, Vector3.zero, Quaternion.identity,parent.transform);
+
+            Vector2 pos = startingPos + (spacing * idx);
+            Instantiate(card, pos, Quaternion.identity,parent.transform);
+            idx++;
         }
     }
 }

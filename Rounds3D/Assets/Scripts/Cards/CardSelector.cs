@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,22 +9,29 @@ public class CardSelector : MonoBehaviour{
     [SerializeField] GameObject cardParent;
 
     [SerializeField] float selectedScale;
+    [SerializeField] Transform targetSelectPos;
     List<GameObject> cards;
 
     int selectedIndex = 0;
 
     InputAction leftAction;
     InputAction rightAction;
+    InputAction selectAction;
+
+    List<InputAction> actions;
     [SerializeField] private InputActionAsset inputActions;
 
     void OnEnable(){
-        leftAction.Enable();
-        rightAction.Enable();
+        foreach(InputAction action in actions){
+            action.Enable();
+        }
+
     }
 
     void OnDisable(){
-        leftAction.Disable();
-        rightAction.Disable();
+        foreach(InputAction action in actions){
+            action.Disable();
+        }
     }
 
     List<GameObject> grabCards() {
@@ -68,7 +76,24 @@ public class CardSelector : MonoBehaviour{
             idx++;
         }
     }
+
+    void SelectCurrentCard(){
+        if(!ButtonPressUtil.Pressed(selectAction)) return;
+
+
+        GameObject currCardGO = cards[selectedIndex];
+        Card card = currCardGO.GetComponent<Card>();
+
+        card.ApplyEffect();
+
+        GOTransforms.TranslateToTarget translator = currCardGO.AddComponent<GOTransforms.TranslateToTarget>();
+        
+        translator.Init(currCardGO.transform, targetSelectPos, .5f);
+    }
+
     void Update(){
+        SelectCurrentCard();
+
         bool change = changeSelectedIndex();
         if(!change) return;
 
@@ -79,6 +104,13 @@ public class CardSelector : MonoBehaviour{
     void Awake(){
         leftAction = inputActions.FindAction("Left");
         rightAction = inputActions.FindAction("Right");
+        selectAction = inputActions.FindAction("Select");
+
+        actions = new List<InputAction>{
+            leftAction,
+            rightAction,
+            selectAction
+        };
     }
 
     void Start(){
