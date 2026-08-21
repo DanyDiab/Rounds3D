@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,11 +12,19 @@ public class CardSelector : MonoBehaviour{
 
     int selectedIndex = 0;
 
-    bool hasKeyboard;
-
     InputAction leftAction;
     InputAction rightAction;
     [SerializeField] private InputActionAsset inputActions;
+
+    void OnEnable(){
+        leftAction.Enable();
+        rightAction.Enable();
+    }
+
+    void OnDisable(){
+        leftAction.Disable();
+        rightAction.Disable();
+    }
 
     List<GameObject> grabCards() {
         if (cardParent == null) {
@@ -36,14 +45,12 @@ public class CardSelector : MonoBehaviour{
     bool changeSelectedIndex(){
         bool change = false;
 
-        if(ButtonPressUtil.Pressed(leftAction)){
-            Debug.Log("Left");
+        if(ButtonPressUtil.Pressed(rightAction)){
             if(selectedIndex == cards.Count - 1) return false;
             selectedIndex++;
             change = true;
         }
-        else if(ButtonPressUtil.Pressed(rightAction)){
-            Debug.Log("Right");
+        else if(ButtonPressUtil.Pressed(leftAction)){
             if(selectedIndex == 0) return false;
             selectedIndex--;
             change = true;
@@ -57,7 +64,8 @@ public class CardSelector : MonoBehaviour{
         int idx = 0;
         foreach(GameObject card in cards){
             float newScale = idx == selectedIndex ? selectedScale : 1.0f;
-            card.transform.localScale = Vector3.one * newScale; 
+            card.transform.localScale = Vector3.one * newScale;
+            idx++;
         }
     }
     void Update(){
@@ -65,7 +73,6 @@ public class CardSelector : MonoBehaviour{
         if(!change) return;
 
 
-        Debug.Log(selectedIndex);
         UpdateCardScales();
     }
 
@@ -76,7 +83,6 @@ public class CardSelector : MonoBehaviour{
 
     void Start(){
         cards = grabCards();
-        hasKeyboard = Keyboard.current != null;
         UpdateCardScales();
     }
 
