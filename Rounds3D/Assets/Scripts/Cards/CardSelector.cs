@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CardSelector : MonoBehaviour{
     [SerializeField] GameObject cardParent;
@@ -12,22 +13,37 @@ public class CardSelector : MonoBehaviour{
 
     bool hasKeyboard;
 
+    InputAction leftAction;
+    InputAction rightAction;
+    [SerializeField] private InputActionAsset inputActions;
 
+    List<GameObject> grabCards() {
+        if (cardParent == null) {
+            return new List<GameObject>();
+        }
 
-    List<GameObject> grabCards(){
-        return cardParent.GetComponentsInChildren<GameObject>().ToList();
+        Transform parentTransform = cardParent.transform;
+        List<GameObject> cards = new List<GameObject>(parentTransform.childCount);
+
+        for (int i = 0; i < parentTransform.childCount; i++) {
+            cards.Add(parentTransform.GetChild(i).gameObject);
+        }
+
+        return cards;
     }
 
 // returns if a change occured
     bool changeSelectedIndex(){
         bool change = false;
 
-        if(Input.GetKeyDown(KeyCode.D)){
+        if(ButtonPressUtil.Pressed(leftAction)){
+            Debug.Log("Left");
             if(selectedIndex == cards.Count - 1) return false;
             selectedIndex++;
             change = true;
         }
-        else if(Input.GetKeyDown(KeyCode.A)){
+        else if(ButtonPressUtil.Pressed(rightAction)){
+            Debug.Log("Right");
             if(selectedIndex == 0) return false;
             selectedIndex--;
             change = true;
@@ -48,11 +64,20 @@ public class CardSelector : MonoBehaviour{
         bool change = changeSelectedIndex();
         if(!change) return;
 
+
+        Debug.Log(selectedIndex);
         UpdateCardScales();
+    }
+
+    void Awake(){
+        leftAction = inputActions.FindAction("Left");
+        rightAction = inputActions.FindAction("Right");
     }
 
     void Start(){
         cards = grabCards();
+        hasKeyboard = Keyboard.current != null;
+        UpdateCardScales();
     }
 
 }

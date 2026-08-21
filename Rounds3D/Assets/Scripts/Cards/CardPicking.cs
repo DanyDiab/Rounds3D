@@ -14,7 +14,7 @@ public class CardPicking : MonoBehaviour{
         
     }
 
-    void Start(){
+    void Awake(){
         cards = new List<GameObject>();
         populateDisplay();
     }
