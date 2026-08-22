@@ -94,7 +94,8 @@ public class CardSelector : MonoBehaviour{
 
         GOTransforms.TranslateToTarget translator = currCardGO.AddComponent<GOTransforms.TranslateToTarget>();
         
-        translator.Init(currCardGO.transform, targetSelectPos, .5f);
+        translator.Init(currCardGO.transform, targetSelectPos, .5f, EasingType.EaseOutQuart);
+        cards.RemoveAt(selectedIndex);
     }
 
     void FlipSelectedCard(){
@@ -112,9 +113,13 @@ public class CardSelector : MonoBehaviour{
 
         Vector3 currRot = selectedCard.transform.rotation.eulerAngles;
 
-        rotator.Init(new Vector3(currRot.x,180.0f,currRot.z),selectedCard.transform, .2f, () => cards[selectedIndex].card.ShowFace(CardState.SHOWN));
-
-        ;
+// initlize the rotation, then make a lambda callback to show the shown face of the card
+        rotator.Init(new Vector3(currRot.x,180.0f,currRot.z),
+            selectedCard.transform, 
+            .4f, 
+            () => cards[selectedIndex].card.ShowFace(CardState.SHOWN), 
+            EasingType.EaseInExpo
+        );
     }
 
     void Update(){
