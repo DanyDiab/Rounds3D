@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace GOTransforms{
@@ -9,18 +10,29 @@ namespace GOTransforms{
 
         float timeToTake;
         Transform transformToRot;
+        Action callBack;
+        object[] args;
 
-        public void Init(Vector3 end, Transform transform, float timeToTake = 1.0f){
+        public void Init(Vector3 end, Transform transform, float timeToTake = 1.0f, Action onComplete = null){
             startingRot = transform.rotation.eulerAngles;
 
             endRot = end;
-            this.timeToTake = timeToTake;   
+            this.timeToTake = timeToTake;
             transformToRot = transform;
+
+            callBack = onComplete;
+            
         }
 
 
         void Update(){
-            if(t >= 1.0f) Destroy(this);
+            if(t >= 1.0f) {
+                if (callBack != null) {
+                    callBack.DynamicInvoke(args);
+                }
+                Destroy(this);
+                return;
+            }
 
             Vector3 newRot = Vector3.Lerp(startingRot, endRot, t);
 

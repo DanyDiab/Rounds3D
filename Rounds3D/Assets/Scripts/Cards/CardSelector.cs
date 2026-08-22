@@ -10,8 +10,7 @@ public class CardSelector : MonoBehaviour{
 
     [SerializeField] float selectedScale;
     [SerializeField] Transform targetSelectPos;
-    List<GameObject> cards;
-    List<CardState> cardStates;
+    List<CardInfo> cards;
 
     int selectedIndex = 0;
 
@@ -35,16 +34,23 @@ public class CardSelector : MonoBehaviour{
         }
     }
 
-    List<GameObject> grabCards() {
+    List<CardInfo> grabCards() {
+        cards = new List<CardInfo>();
         if (cardParent == null) {
-            return new List<GameObject>();
+            return cards;
         }
 
         Transform parentTransform = cardParent.transform;
-        List<GameObject> cards = new List<GameObject>(parentTransform.childCount);
 
         for (int i = 0; i < parentTransform.childCount; i++) {
-            cards.Add(parentTransform.GetChild(i).gameObject);
+            CardInfo ci;
+
+            GameObject child = parentTransform.GetChild(i).gameObject;
+            ci.GO = child;
+            ci.card = child.GetComponent<Card>();
+            ci.cardState = CardState.HIDDEN;
+
+            cards.Add(ci);
         }
 
         return cards;
@@ -71,9 +77,9 @@ public class CardSelector : MonoBehaviour{
 
     void UpdateCardScales(){
         int idx = 0;
-        foreach(GameObject card in cards){
+        foreach(CardInfo card in cards){
             float newScale = idx == selectedIndex ? selectedScale : 1.0f;
-            card.transform.localScale = Vector3.one * newScale;
+            card.GO.transform.localScale = Vector3.one * newScale;
             idx++;
         }
     }
@@ -81,8 +87,8 @@ public class CardSelector : MonoBehaviour{
     void SelectCurrentCard(){
         if(!ButtonPressUtil.Pressed(selectAction)) return;
 
-        GameObject currCardGO = cards[selectedIndex];
-        Card card = currCardGO.GetComponent<Card>();
+        GameObject currCardGO = cards[selectedIndex].GO;
+        Card card = cards[selectedIndex].card;
 
         card.ApplyEffect();
 
@@ -92,17 +98,23 @@ public class CardSelector : MonoBehaviour{
     }
 
     void FlipSelectedCard(){
-        CardState selectedCardState = cardStates[selectedIndex];
+        CardState selectedCardState = cards[selectedIndex].cardState;
 
         if(selectedCardState == CardState.SHOWN) return;
 
-        cardStates[selectedIndex] = CardState.SHOWN;
-        GameObject selectedCard = cards[selectedIndex];
+        CardInfo ci = cards[selectedIndex];
+        ci.cardState = CardState.SHOWN;
+        cards[selectedIndex] = ci;
+
+        GameObject selectedCard = cards[selectedIndex].GO;
 
         GOTransforms.RotateToTarget rotator = selectedCard.AddComponent<GOTransforms.RotateToTarget>();
 
         Vector3 currRot = selectedCard.transform.rotation.eulerAngles;
-        rotator.Init(new Vector3(currRot.x,180.0f,currRot.z),selectedCard.transform, .2f);
+
+        rotator.Init(new Vector3(currRot.x,180.0f,currRot.z),selectedCard.transform, .2f, () => cards[selectedIndex].card.ShowFace(CardState.SHOWN));
+
+        ;
     }
 
     void Update(){
@@ -130,9 +142,6 @@ public class CardSelector : MonoBehaviour{
 
     void Start(){
         cards = grabCards();
-
-        cardStates = Enumerable.Repeat(CardState.HIDDEN, cards.Count).ToList();
-        
 
         UpdateCardScales();
         FlipSelectedCard();
