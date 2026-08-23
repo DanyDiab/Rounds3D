@@ -19,7 +19,7 @@ public class CardSelector : MonoBehaviour{
     InputAction selectAction;
 
     List<InputAction> actions;
-    [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] InputActionAsset inputActions;
 
     void OnEnable(){
         foreach(InputAction action in actions){
