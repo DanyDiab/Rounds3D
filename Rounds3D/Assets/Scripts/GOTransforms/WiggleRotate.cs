@@ -17,6 +17,7 @@ namespace GOTransforms{
 
         void Update(){
             // assume z roatation for now
+            eulerAngles = transform.rotation.eulerAngles;
             float rotation = Mathf.Sin((Time.time * frequency) + startOffset) * amplitude;
             eulerAngles.z = rotation;
             transform.rotation = Quaternion.Euler(eulerAngles);

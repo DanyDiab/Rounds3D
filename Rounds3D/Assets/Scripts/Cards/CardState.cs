@@ -1,4 +1,5 @@
-enum CardState{
+public enum CardState{
     HIDDEN,
-    SHOWN
+    SHOWN,
+    FLIPPING,
 }

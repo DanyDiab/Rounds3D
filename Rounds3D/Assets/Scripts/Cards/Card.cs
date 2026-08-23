@@ -1,11 +1,65 @@
 using UnityEngine;
 
-interface Card{
-    void ApplyEffect();
+public abstract class Card : MonoBehaviour{
+    public abstract void ApplyEffect();
+    CardState cardState;
+    [SerializeField]
+    GameObject frontFace;
 
-    void ShowFace(CardState state);
+    [SerializeField]
+    GameObject backFace;
 
-    GameObject GO {get; set;}
-    GameObject frontFace {get; }
-    GameObject backFace { get; }
+    void Update(){
+        if(cardState != CardState.FLIPPING) return;
+
+        FlipCardSprite();
+    }
+
+    public void ShowFace(CardState state){
+        frontFace.SetActive(false);
+        backFace.SetActive(false);
+
+        switch(state){
+            case CardState.HIDDEN:
+                backFace.SetActive(true);
+                break;
+            case CardState.SHOWN:
+                frontFace.SetActive(true);
+                break;
+        }
+    }
+
+    protected void FlipCardSprite() {
+        Vector3 toCamera = (Camera.main.transform.position - transform.position).normalized;
+
+        Vector3 projectedToCamera = Vector3.ProjectOnPlane(toCamera, transform.up).normalized;
+        Vector3 projectedForward  = Vector3.ProjectOnPlane(backFace.transform.forward, transform.up).normalized;
+
+        float dotted = Vector3.Dot(projectedToCamera, projectedForward);
+        Debug.Log(dotted);
+
+        if (dotted  < -.99f) {
+            cardState = CardState.SHOWN;
+            ShowFace(cardState);
+        }
+
+
+    }
+
+    public void FlipCard(){
+        if(cardState == CardState.SHOWN) return;
+
+        cardState = CardState.FLIPPING;
+
+        GOTransforms.RotateToTarget rotator = gameObject.AddComponent<GOTransforms.RotateToTarget>();
+
+        Vector3 currRot = transform.rotation.eulerAngles;
+
+        // initlize the rotation, then make a lambda callback to show the shown face of the card
+        rotator.Init(new Vector3(currRot.x,180.0f,currRot.z),
+            transform, 
+            .75f, 
+            easingType: EasingType.Linear
+        );
+    }
 }

@@ -10,7 +10,7 @@ public class CardSelector : MonoBehaviour{
 
     [SerializeField] float selectedScale;
     [SerializeField] Transform targetSelectPos;
-    List<CardInfo> cards;
+    List<Card> cards;
 
     int selectedIndex = 0;
 
@@ -34,25 +34,8 @@ public class CardSelector : MonoBehaviour{
         }
     }
 
-    List<CardInfo> grabCards() {
-        cards = new List<CardInfo>();
-        if (cardParent == null) {
-            return cards;
-        }
-
-        Transform parentTransform = cardParent.transform;
-
-        for (int i = 0; i < parentTransform.childCount; i++) {
-            CardInfo ci;
-
-            GameObject child = parentTransform.GetChild(i).gameObject;
-            ci.GO = child;
-            ci.card = child.GetComponent<Card>();
-            ci.cardState = CardState.HIDDEN;
-
-            cards.Add(ci);
-        }
-
+    List<Card> grabCards() {
+        cards = cardParent.GetComponentsInChildren<Card>().ToList();
         return cards;
     }
 
@@ -77,9 +60,9 @@ public class CardSelector : MonoBehaviour{
 
     void UpdateCardScales(){
         int idx = 0;
-        foreach(CardInfo card in cards){
+        foreach(Card card in cards){
             float newScale = idx == selectedIndex ? selectedScale : 1.0f;
-            card.GO.transform.localScale = Vector3.one * newScale;
+            card.gameObject.transform.localScale = Vector3.one * newScale;
             idx++;
         }
     }
@@ -87,40 +70,21 @@ public class CardSelector : MonoBehaviour{
     void SelectCurrentCard(){
         if(!ButtonPressUtil.Pressed(selectAction)) return;
 
-        GameObject currCardGO = cards[selectedIndex].GO;
-        Card card = cards[selectedIndex].card;
+        Card card = cards[selectedIndex];
 
         card.ApplyEffect();
 
-        GOTransforms.TranslateToTarget translator = currCardGO.AddComponent<GOTransforms.TranslateToTarget>();
+        GOTransforms.TranslateToTarget translator = card.gameObject.AddComponent<GOTransforms.TranslateToTarget>();
         
-        translator.Init(currCardGO.transform, targetSelectPos, .5f, EasingType.EaseOutQuart);
+        translator.Init(card.transform, targetSelectPos, .5f, EasingType.EaseOutQuart);
         cards.RemoveAt(selectedIndex);
     }
 
     void FlipSelectedCard(){
-        CardState selectedCardState = cards[selectedIndex].cardState;
-
-        if(selectedCardState == CardState.SHOWN) return;
-
-        CardInfo ci = cards[selectedIndex];
-        ci.cardState = CardState.SHOWN;
-        cards[selectedIndex] = ci;
-
-        GameObject selectedCard = cards[selectedIndex].GO;
-
-        GOTransforms.RotateToTarget rotator = selectedCard.AddComponent<GOTransforms.RotateToTarget>();
-
-        Vector3 currRot = selectedCard.transform.rotation.eulerAngles;
-
-// initlize the rotation, then make a lambda callback to show the shown face of the card
-        rotator.Init(new Vector3(currRot.x,180.0f,currRot.z),
-            selectedCard.transform, 
-            .4f, 
-            () => cards[selectedIndex].card.ShowFace(CardState.SHOWN), 
-            EasingType.EaseInExpo
-        );
+        cards[selectedIndex].FlipCard();
     }
+
+
 
     void Update(){
         SelectCurrentCard();
