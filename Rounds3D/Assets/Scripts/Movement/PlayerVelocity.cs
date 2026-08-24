@@ -66,8 +66,7 @@ public class PlayerVelocity : MonoBehaviour{
     }
 
     void rayCastCollideGround(){
-        grounded = Physics.Raycast(footStart.transform.position,Vector3.down, 5.0f, groundLayer, QueryTriggerInteraction.Ignore );
-        Debug.Log(grounded);
+        grounded = Physics.Raycast(footStart.transform.position,Vector3.down, 5.0f, groundLayer, QueryTriggerInteraction.Ignore);
     }
 
     Vector3 getJumpForce(){
@@ -106,16 +105,17 @@ public class PlayerVelocity : MonoBehaviour{
         if(!grounded) return input;
 
         if(leftAction.IsPressed()){
-            input.x -= 1.0f;
+            input -= player.transform.right;
         }
         if(rightAction.IsPressed()){
-            input.x += 1.0f;
+            input += player.transform.right;
+
         }
         if(downAction.IsPressed()){
-            input.z -= 1.0f;
+            input -= player.transform.forward;
         }
         if(upAction.IsPressed()){
-            input.z += 1.0f;
+            input += player.transform.forward;
         }
 
         return input.normalized;
