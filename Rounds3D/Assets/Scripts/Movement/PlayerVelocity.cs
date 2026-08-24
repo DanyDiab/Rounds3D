@@ -2,6 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+enum MoveState{
+    GROUNDED,
+    AIR
+}
+
 public class PlayerVelocity : MonoBehaviour{
 
     Vector3 velocity;
@@ -9,6 +14,9 @@ public class PlayerVelocity : MonoBehaviour{
     [SerializeField] float jumpForce;
     [SerializeField] float accelerationForce;
     [SerializeField] float decelerationForce;
+    [SerializeField] float airAccelForce;
+    [SerializeField] float groundRayCastSize;
+    [SerializeField] float airControlFactor;
 
 
     [SerializeField] GameObject footStart;
@@ -27,12 +35,15 @@ public class PlayerVelocity : MonoBehaviour{
 
     Rigidbody rb;
 
+    Vector3 lastKnownGroundedVelocity;
+    MoveState currState;
 
 
-    bool grounded;
+
+
 
     void Start(){
-        velocity = Vector3.zero;
+        lastKnownGroundedVelocity = Vector3.zero;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -66,11 +77,13 @@ public class PlayerVelocity : MonoBehaviour{
     }
 
     void rayCastCollideGround(){
-        grounded = Physics.Raycast(footStart.transform.position,Vector3.down, 5.0f, groundLayer, QueryTriggerInteraction.Ignore);
+        bool groundCollide = Physics.Raycast(footStart.transform.position,Vector3.down, groundRayCastSize, groundLayer, QueryTriggerInteraction.Ignore);
+
+        currState = groundCollide ? MoveState.GROUNDED : MoveState.AIR;
     }
 
     Vector3 getJumpForce(){
-        if(!jumpAction.triggered || !grounded) return Vector3.zero;
+        if(!jumpAction.triggered || currState != MoveState.GROUNDED) return Vector3.zero;
 
         Vector3 jumpvec = new Vector3(0.0f, jumpForce, 0.0f);
 
@@ -82,27 +95,62 @@ public class PlayerVelocity : MonoBehaviour{
         rayCastCollideGround();
     }
 
-    void Update(){
-        Vector3 moveDir = readInputDir();
-        
-        Vector3 targetHorizontal = moveDir * speed;
-        Vector3 currentHorizontal = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
-
+    float determineAccelForce(Vector3 moveDir){
         float maxDelta = moveDir == Vector3.zero ? decelerationForce : accelerationForce;
 
-        if(Vector3.Dot(targetHorizontal, currentHorizontal) < 0){
-            currentHorizontal = Vector3.zero;
-        }
-        Vector3 horizontal = Vector3.MoveTowards(currentHorizontal, targetHorizontal, maxDelta * Time.deltaTime);
+        return maxDelta;
+    }
 
-        rb.velocity = new Vector3(horizontal.x, rb.velocity.y, horizontal.z);
+    void DetermineVelocity(){
+        Vector3 moveDir = readInputDir();
+
+        switch(currState){
+            case MoveState.GROUNDED:{
+                Vector3 targetHorizontal = moveDir * speed;
+
+                Vector3 currentHorizontal = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
+
+                if(Vector3.Dot(targetHorizontal, currentHorizontal) < 0){
+                   currentHorizontal = Vector3.zero;
+                }
+        
+                float maxDelta = determineAccelForce(moveDir);
+
+                Vector3 horizontalTowardsTarget = Vector3.MoveTowards(currentHorizontal, targetHorizontal, maxDelta * Time.deltaTime);
+                rb.velocity = new Vector3(horizontalTowardsTarget.x, rb.velocity.y, horizontalTowardsTarget.z);
+
+                rb.AddForce(getJumpForce());
+
+                lastKnownGroundedVelocity = horizontalTowardsTarget;
+                break;
+            }
+            case MoveState.AIR:{
+                Vector3 targetHorizontal = ((moveDir * airControlFactor) * speed) +  ((1.0f - airControlFactor) * lastKnownGroundedVelocity);
+                Vector3 currentHorizontal = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
+                
+                Vector3 horizontalTowardsTarget = Vector3.MoveTowards(currentHorizontal, targetHorizontal, airAccelForce * Time.deltaTime);
+                rb.velocity = new Vector3(horizontalTowardsTarget.x, rb.velocity.y, horizontalTowardsTarget.z);
+
+                break;
+            }
+        }
+    }
+
+    void Update(){
+        
+        DetermineVelocity();
+
+
+
+        
+
+
+
     }
 
 
     Vector3 readInputDir(){
         Vector3 input = Vector3.zero;
-
-        if(!grounded) return input;
 
         if(leftAction.IsPressed()){
             input -= player.transform.right;

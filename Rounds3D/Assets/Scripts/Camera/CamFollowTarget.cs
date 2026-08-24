@@ -11,17 +11,14 @@ public class CamFollowTarget : MonoBehaviour{
 
     void Start(){
         camTrans = cam.transform;
+        camTrans.position = target.position;
     }
 
     void translateCamera(){
         camTrans.position = target.position;
     }
 
-    void rotateCamera(){
-        camTrans.rotation = target.rotation;
-    }
     void Update(){
         translateCamera();
-        rotateCamera();
     } 
 }
