@@ -91,11 +91,20 @@ public class CardSelector : MonoBehaviour{
         cards[selectedIndex].FlipCard();
     }
 
+    void dissolveCards(){
+        foreach(Card card in cards){
+            card.gameObject.AddComponent<Dissolve>();
+        }
+    }
+
 
 
     void Update(){
         if((cards?.Count ?? 0) == 0) return;
-        if(numPicked >= stats.CardsToPick) return;
+        if(numPicked >= stats.CardsToPick){
+            dissolveCards();
+            return;
+        };
 
         bool selected = SelectCurrentCard();
 
