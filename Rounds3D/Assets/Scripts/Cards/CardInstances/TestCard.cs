@@ -7,8 +7,6 @@ public class TestCard : Card {
 
 
     void Start(){
-
+        
     }
-
-
 }

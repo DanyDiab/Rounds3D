@@ -6,7 +6,7 @@ public class CardPicking : MonoBehaviour{
 
     List<GameObject> cards;
 
-    [SerializeField] GameObject testCard;
+    [SerializeField] List<GameObject> cardOptions;
     [SerializeField] GameObject parent;
 
 
@@ -21,13 +21,26 @@ public class CardPicking : MonoBehaviour{
 
     [ContextMenu("Populate Display")]
     void populateDisplay(){
+        clearAllCards();
         populateCards();
         displayCards();
     }
 
     void populateCards(){
         for(int i = 0; i < numCards; i++){
-            cards.Add(testCard);
+            int randChoice = Random.Range(0, cardOptions.Count);
+            cards.Add(cardOptions[randChoice]);
+        }
+    }
+
+    void clearAllCards(){
+        cards.Clear();
+        for(int i = parent.transform.childCount - 1; i >= 0; i--){
+            Transform child = parent.transform.GetChild(i);
+            if(child == null){
+                continue;
+            }
+            Destroy(child.gameObject);
         }
     }
 

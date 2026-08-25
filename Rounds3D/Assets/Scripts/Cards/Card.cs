@@ -3,16 +3,19 @@ using UnityEngine;
 public abstract class Card : MonoBehaviour{
     public abstract void ApplyEffect();
     CardState cardState;
-    [SerializeField]
-    GameObject frontFace;
+    [SerializeField] GameObject frontFace;
 
-    [SerializeField]
-    GameObject backFace;
+    [SerializeField] GameObject backFace;
+    [SerializeField] protected PlayerStats playerStats;
 
     void Update(){
         if(cardState != CardState.FLIPPING) return;
 
         FlipCardSprite();
+    }
+
+    void Start(){
+        ShowFace(CardState.HIDDEN);
     }
 
     public void ShowFace(CardState state){
@@ -36,7 +39,6 @@ public abstract class Card : MonoBehaviour{
         Vector3 projectedForward  = Vector3.ProjectOnPlane(backFace.transform.forward, transform.up).normalized;
 
         float dotted = Vector3.Dot(projectedToCamera, projectedForward);
-        Debug.Log(dotted);
 
         if (dotted  < -.99f) {
             cardState = CardState.SHOWN;

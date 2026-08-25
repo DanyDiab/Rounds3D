@@ -243,7 +243,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numCards: 5
-  testCard: {fileID: 337360572352394897, guid: 145c20d23c455eafe9874f03a5cd418b, type: 3}
+  cardOptions:
+  - {fileID: 337360572352394897, guid: 25e6bfae2032f7d198248d204cc71377, type: 3}
+  - {fileID: 337360572352394897, guid: 1dbed291216e5bde2a0bbba36083b3e8, type: 3}
   parent: {fileID: 595019454}
 --- !u!224 &198820321
 RectTransform:
@@ -279,6 +281,7 @@ MonoBehaviour:
   cardParent: {fileID: 595019454}
   selectedScale: 1.1
   targetSelectPos: {fileID: 1894627703}
+  stats: {fileID: 11400000, guid: d8d68758e7e942b099a357ef169002b6, type: 2}
   inputActions: {fileID: -944628639613478452, guid: 56a290bb3756a721bbf5bb395325a4ae, type: 3}
 --- !u!1 &595019454
 GameObject:

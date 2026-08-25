@@ -26,6 +26,7 @@ public class PlayerVelocity : MonoBehaviour{
     InputAction upAction;
     InputAction downAction;
     InputAction jumpAction;
+    InputAction crouchAction;
 
     [SerializeField] GameObject player;
     [SerializeField] LayerMask groundLayer;

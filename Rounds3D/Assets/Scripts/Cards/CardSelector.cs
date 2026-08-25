@@ -10,6 +10,7 @@ public class CardSelector : MonoBehaviour{
 
     [SerializeField] float selectedScale;
     [SerializeField] Transform targetSelectPos;
+    [SerializeField] PlayerStats stats;
     List<Card> cards;
 
     int selectedIndex = 0;
@@ -20,6 +21,8 @@ public class CardSelector : MonoBehaviour{
 
     List<InputAction> actions;
     [SerializeField] InputActionAsset inputActions;
+
+    int numPicked;
 
     void OnEnable(){
         foreach(InputAction action in actions){
@@ -67,8 +70,8 @@ public class CardSelector : MonoBehaviour{
         }
     }
 
-    void SelectCurrentCard(){
-        if(!ButtonPressUtil.Pressed(selectAction)) return;
+    bool SelectCurrentCard(){
+        if(!ButtonPressUtil.Pressed(selectAction)) return false;
 
         Card card = cards[selectedIndex];
 
@@ -78,6 +81,10 @@ public class CardSelector : MonoBehaviour{
         
         translator.Init(card.transform, targetSelectPos, .5f, EasingType.EaseOutQuart);
         cards.RemoveAt(selectedIndex);
+
+        selectedIndex = 0;
+        numPicked++;
+        return true;
     }
 
     void FlipSelectedCard(){
@@ -87,10 +94,14 @@ public class CardSelector : MonoBehaviour{
 
 
     void Update(){
-        SelectCurrentCard();
+        if((cards?.Count ?? 0) == 0) return;
+        if(numPicked >= stats.CardsToPick) return;
+
+        bool selected = SelectCurrentCard();
 
         bool change = changeSelectedIndex();
-        if(!change) return;
+        // might need another empty check here, since if we select the last card 
+        if(!change && !selected) return;
 
         FlipSelectedCard();
         UpdateCardScales();
@@ -110,6 +121,7 @@ public class CardSelector : MonoBehaviour{
     }
 
     void Start(){
+        numPicked = 0;
         cards = grabCards();
 
         UpdateCardScales();
