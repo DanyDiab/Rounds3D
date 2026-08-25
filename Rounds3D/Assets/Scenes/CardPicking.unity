@@ -244,8 +244,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numCards: 5
   cardOptions:
+  - {fileID: 337360572352394897, guid: 17f35a7c6181cf4f8a429b5fb56bd3a4, type: 3}
+  - {fileID: 337360572352394897, guid: e641780ccebc2605a8e0c859f6f59fed, type: 3}
   - {fileID: 337360572352394897, guid: 25e6bfae2032f7d198248d204cc71377, type: 3}
+  - {fileID: 337360572352394897, guid: ac64968fb176afe299edc07dbd783d97, type: 3}
+  - {fileID: 337360572352394897, guid: 2295112f6f3959a039fa4aad84677233, type: 3}
+  - {fileID: 337360572352394897, guid: c281d79c30e6a15f6b0993be346431a9, type: 3}
+  - {fileID: 337360572352394897, guid: 6fbcab0ead94540279697a38834cd45c, type: 3}
   - {fileID: 337360572352394897, guid: 1dbed291216e5bde2a0bbba36083b3e8, type: 3}
+  - {fileID: 337360572352394897, guid: ddaf1ff118b37cfa1aa262bece22bf66, type: 3}
+  - {fileID: 337360572352394897, guid: 7c058875e198c6691b85f521365410fd, type: 3}
   parent: {fileID: 595019454}
 --- !u!224 &198820321
 RectTransform:

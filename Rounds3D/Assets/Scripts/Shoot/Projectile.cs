@@ -47,7 +47,7 @@ public class Projectile : MonoBehaviour{
 
         Vector3 reflectedDirection = Vector3.Reflect(incomingDirection, contact.normal);
 
-        rb.velocity = reflectedDirection * speed;
+        rb.velocity = reflectedDirection * speed * stats.speedIncreasePerBounce;
         rb.angularVelocity = Vector3.zero;
         transform.forward = reflectedDirection;
     }

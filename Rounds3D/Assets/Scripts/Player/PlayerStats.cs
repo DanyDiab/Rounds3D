@@ -9,6 +9,7 @@ public class PlayerStats : ScriptableObject{
     public float RateOfFire;
     public float BulletSpeed;
     public float BulletBounces;
+    public float speedIncreasePerBounce;
 
     [Header("HP")]
     public float Health;
