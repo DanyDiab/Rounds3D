@@ -8,6 +8,12 @@ public class ProjectileSpawner : MonoBehaviour{
     InputAction shootAction;
 
     [SerializeField] GameObject projToSpawn;
+    [Tooltip("This is who/where the spawning comes from (normally the player)")]
+    [SerializeField] GameObject spawning;
+    [SerializeField] GameObject projectileParent;
+    [Tooltip("Rotation of the projectile")]
+    [SerializeField] Transform shootRotation;
+    [SerializeField] PlayerStats stats;
 
     void OnEnable(){
         shootAction.Enable();
@@ -17,8 +23,8 @@ public class ProjectileSpawner : MonoBehaviour{
         shootAction.Disable();
     }
 
-    void Start(){
-        inputActions.FindAction("Shoot");
+    void Awake(){
+        shootAction = inputActions.FindAction("Shoot");
     }
 
 
@@ -29,6 +35,8 @@ public class ProjectileSpawner : MonoBehaviour{
     }
 
     void spawnProjectile(){
-        Instantiate(projToSpawn);
+        GameObject projGO = Instantiate(projToSpawn, spawning.transform.position, spawning.transform.rotation, projectileParent.transform);
+        Projectile proj = projGO.GetComponent<Projectile>();
+        proj.init(stats,spawning, shootRotation.forward);
     }
 }

@@ -14,8 +14,11 @@ public class PlayerStats : ScriptableObject{
     public float Health;
     public float Regen;
 
-    [Header("Speed")]
+    [Header("Movement")]
     public float Speed;
+    public float JumpForce;
+    public float Stamina;
+    public float StaminaRegen;
     
     [Header("Misc")]
     public float CardsToPick;

@@ -2,16 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-enum MoveState{
+enum GroundState{
     GROUNDED,
     AIR
 }
 
 public class PlayerVelocity : MonoBehaviour{
 
-    Vector3 velocity;
-    [SerializeField] float speed;
-    [SerializeField] float jumpForce;
+    [SerializeField] PlayerStats stats;
     [SerializeField] float accelerationForce;
     [SerializeField] float decelerationForce;
     [SerializeField] float airAccelForce;
@@ -37,7 +35,7 @@ public class PlayerVelocity : MonoBehaviour{
     Rigidbody rb;
 
     Vector3 lastKnownGroundedVelocity;
-    MoveState currState;
+    GroundState currState;
 
 
 
@@ -80,13 +78,13 @@ public class PlayerVelocity : MonoBehaviour{
     void rayCastCollideGround(){
         bool groundCollide = Physics.Raycast(footStart.transform.position,Vector3.down, groundRayCastSize, groundLayer, QueryTriggerInteraction.Ignore);
 
-        currState = groundCollide ? MoveState.GROUNDED : MoveState.AIR;
+        currState = groundCollide ? GroundState.GROUNDED : GroundState.AIR;
     }
 
     Vector3 getJumpForce(){
-        if(!jumpAction.triggered || currState != MoveState.GROUNDED) return Vector3.zero;
+        if(!jumpAction.triggered || currState != GroundState.GROUNDED) return Vector3.zero;
 
-        Vector3 jumpvec = new Vector3(0.0f, jumpForce, 0.0f);
+        Vector3 jumpvec = new Vector3(0.0f, stats.JumpForce, 0.0f);
 
         return jumpvec;
     }
@@ -106,8 +104,8 @@ public class PlayerVelocity : MonoBehaviour{
         Vector3 moveDir = readInputDir();
 
         switch(currState){
-            case MoveState.GROUNDED:{
-                Vector3 targetHorizontal = moveDir * speed;
+            case GroundState.GROUNDED:{
+                Vector3 targetHorizontal = moveDir * stats.Speed;
 
                 Vector3 currentHorizontal = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
 
@@ -125,8 +123,8 @@ public class PlayerVelocity : MonoBehaviour{
                 lastKnownGroundedVelocity = horizontalTowardsTarget;
                 break;
             }
-            case MoveState.AIR:{
-                Vector3 targetHorizontal = ((moveDir * airControlFactor) * speed) +  ((1.0f - airControlFactor) * lastKnownGroundedVelocity);
+            case GroundState.AIR:{
+                Vector3 targetHorizontal = ((moveDir * airControlFactor) * stats.Speed) +  ((1.0f - airControlFactor) * lastKnownGroundedVelocity);
                 Vector3 currentHorizontal = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
                 
                 Vector3 horizontalTowardsTarget = Vector3.MoveTowards(currentHorizontal, targetHorizontal, airAccelForce * Time.deltaTime);

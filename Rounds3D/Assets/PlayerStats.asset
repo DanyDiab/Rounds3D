@@ -15,10 +15,13 @@ MonoBehaviour:
   Damage: 0
   RateOfFire: 0
   BulletSpeed: 0
-  BulletBounces: 0
+  BulletBounces: 5
   Health: 130
   Regen: 0
   Speed: 40
+  JumpForce: 0
+  Stamina: 0
+  StaminaRegen: 0
   CardsToPick: 1
   Ammo: 0
   ReloadSpeed: 0
