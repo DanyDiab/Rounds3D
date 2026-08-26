@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   Damage: 0
-  RateOfFire: 0
+  RateOfFire: 400
   BulletSpeed: 0
-  BulletBounces: 5
-  Health: 130
+  BulletBounces: 3
+  SpeedIncreasePerBounce: 0.7
+  Health: 340
   Regen: 0
-  Speed: 40
+  Speed: 25
   JumpForce: 0
-  Stamina: 0
+  Stamina: 3
   StaminaRegen: 0
-  CardsToPick: 1
-  Ammo: 0
-  ReloadSpeed: 0
+  CardsToPick: 2
+  Ammo: 5
+  ReloadTimeMS: 2000

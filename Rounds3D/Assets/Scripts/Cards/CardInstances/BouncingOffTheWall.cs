@@ -6,6 +6,6 @@ public class BouncingOffTheWall : Card {
 
     public override void ApplyEffect(){
         playerStats.BulletBounces += numBouceIncrease;
-        playerStats.speedIncreasePerBounce += increasePerBounce;
+        playerStats.SpeedIncreasePerBounce += increasePerBounce;
     }
 }

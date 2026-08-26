@@ -11,9 +11,9 @@ namespace GOTransforms{
 
         float t;
 
-        public void Init(Transform trans, Transform target, float timeToTake = 1.0f, EasingType easingType = EasingType.Linear){
+        public void Init(Transform trans, Vector3 target, float timeToTake = 1.0f, EasingType easingType = EasingType.Linear){
             this.trans = trans;
-            this.targetPos = target.position;
+            this.targetPos = target;
             this.timeToTake = timeToTake;
             this.easingType = easingType;
             t = 0.0f;

@@ -6,10 +6,10 @@ using UnityEngine;
 public class PlayerStats : ScriptableObject{
     [Header("DPS")]
     public float Damage;
-    public float RateOfFire;
+    public float RateOfFire; // this assumes Bullets Per Minute
     public float BulletSpeed;
     public float BulletBounces;
-    public float speedIncreasePerBounce;
+    public float SpeedIncreasePerBounce;
 
     [Header("HP")]
     public float Health;
@@ -26,7 +26,8 @@ public class PlayerStats : ScriptableObject{
 
     [Header("Reload")]
     public float Ammo;
-    public float ReloadSpeed;
+    public float ReloadTimeMS;
+
 
 
 }

@@ -79,7 +79,7 @@ public class CardSelector : MonoBehaviour{
 
         GOTransforms.TranslateToTarget translator = card.gameObject.AddComponent<GOTransforms.TranslateToTarget>();
         
-        translator.Init(card.transform, targetSelectPos, .5f, EasingType.EaseOutQuart);
+        translator.Init(card.transform, targetSelectPos.position, .5f, EasingType.EaseOutQuart);
         cards.RemoveAt(selectedIndex);
 
         selectedIndex = 0;
@@ -91,18 +91,28 @@ public class CardSelector : MonoBehaviour{
         cards[selectedIndex].FlipCard();
     }
 
-    void dissolveCards(){
+
+    void yeetRemainingCards(){
+        float distance = 1000.0f;
+        float time = 3.0f;
         foreach(Card card in cards){
-            card.gameObject.AddComponent<Dissolve>();
+            Vector3 randomDir = Random.onUnitSphere;
+            Vector3 randomRot = Random.onUnitSphere;
+
+            GOTransforms.TranslateToTarget translator = card.gameObject.AddComponent<GOTransforms.TranslateToTarget>();
+            translator.Init(card.transform,(distance * randomDir) + card.transform.position,timeToTake: time);
+
+            GOTransforms.RotateToTarget rotator = card.gameObject.AddComponent<GOTransforms.RotateToTarget>();
+            rotator.Init(randomDir * distance,card.transform, timeToTake: time);
         }
     }
-
 
 
     void Update(){
         if((cards?.Count ?? 0) == 0) return;
         if(numPicked >= stats.CardsToPick){
-            dissolveCards();
+            yeetRemainingCards();
+            Destroy(this);
             return;
         };
 
