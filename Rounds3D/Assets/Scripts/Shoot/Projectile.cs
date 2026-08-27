@@ -24,7 +24,7 @@ public class Projectile : MonoBehaviour{
         rb = GetComponent<Rigidbody>();
         shooterCollider = shooter.GetComponentInChildren<Collider>();
         
-        rb.AddForce(shootDirection.normalized * 5000);
+        rb.AddForce(shootDirection.normalized * stats.BulletSpeed);
 
         Physics.IgnoreCollision(projCollider, shooterCollider, true);
     }
