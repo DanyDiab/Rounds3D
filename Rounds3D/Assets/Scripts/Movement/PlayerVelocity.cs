@@ -82,7 +82,7 @@ public class PlayerVelocity : MonoBehaviour{
     }
 
     Vector3 getJumpForce(){
-        if(!jumpAction.triggered || currState != GroundState.GROUNDED) return Vector3.zero;
+        if(!jumpAction.triggered) return Vector3.zero;
 
         Vector3 jumpvec = new Vector3(0.0f, stats.JumpForce, 0.0f);
 

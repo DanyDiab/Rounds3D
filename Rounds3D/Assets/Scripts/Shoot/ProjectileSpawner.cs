@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -27,6 +28,9 @@ public class ProjectileSpawner : MonoBehaviour{
     
     int shotNumber;
     [SerializeField] InputAction reloadAction;
+    [SerializeField] RotateForSeconds rotateForSeconds;
+    [SerializeField] GameObject gun;
+    [SerializeField] ExplosionManager explosionManager;
     SpawnState currState;
 
 
@@ -76,6 +80,9 @@ public class ProjectileSpawner : MonoBehaviour{
                 break;
             }
             case SpawnState.STARTRELOAD:{
+                float timeS = stats.ReloadTimeMS / 1000.0f;
+                float rotationSpeed = 360.0f / timeS;
+                rotateForSeconds.startRotate(gun,Vector3.right, stats.ReloadTimeMS / 1000.0f, rotationSpeed);
                 StartCoroutine(Reload());
                 break;
             }
@@ -85,15 +92,13 @@ public class ProjectileSpawner : MonoBehaviour{
             }
 
         }
-
-
-
-
     }
 
     void spawnProjectile(){
         GameObject projGO = Instantiate(projToSpawn, spawning.transform.position, spawning.transform.rotation, projectileParent.transform);
         Projectile proj = projGO.GetComponent<Projectile>();
-        proj.init(stats,spawning, shootRotation.forward);
+        proj.init(stats,spawning, shootRotation.forward, explosionManager);
+
+        // shake.startShake(1.0f, 200.0f);
     }
 }

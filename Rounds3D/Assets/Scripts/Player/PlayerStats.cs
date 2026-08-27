@@ -7,9 +7,7 @@ public class PlayerStats : ScriptableObject{
     [Header("DPS")]
     public float Damage;
     public float RateOfFire; // this assumes Bullets Per Minute
-    public float BulletSpeed;
-    public float BulletBounces;
-    public float SpeedIncreasePerBounce;
+
 
     [Header("HP")]
     public float Health;
@@ -27,7 +25,11 @@ public class PlayerStats : ScriptableObject{
     [Header("Reload")]
     public float Ammo;
     public float ReloadTimeMS;
-
+    [Header("Bullet")]
+    public float BulletSpeed;
+    public float BulletBounces;
+    public float SpeedIncreasePerBounce;
+    public bool BulletExplosive;
 
 
 }

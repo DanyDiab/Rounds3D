@@ -11,13 +11,16 @@ public class Projectile : MonoBehaviour{
     [SerializeField] Collider projCollider;
     Collider shooterCollider;
     Vector3 lastVelocity;
+    ExplosionManager explosionManager;
 
 
-    public void init(PlayerStats playerStats, GameObject shooter, Vector3 shootDirection){
+
+    public void init(PlayerStats playerStats, GameObject shooter, Vector3 shootDirection, ExplosionManager explosionManager){
         numBounced = 0;
         stats = playerStats;
 
         this.shooter = shooter;
+        this.explosionManager = explosionManager;
         rb = GetComponent<Rigidbody>();
         shooterCollider = shooter.GetComponentInChildren<Collider>();
         
@@ -41,6 +44,8 @@ public class Projectile : MonoBehaviour{
             Destroy(gameObject);
         }
         
+        // Instantiate(explosionParent);
+        if(stats.BulletExplosive) explosionManager.spawnExplosion(transform.position, 1.0f);
         ContactPoint contact = collision.GetContact(0);
         Vector3 incomingDirection = lastVelocity.normalized;
         float speed = lastVelocity.magnitude;
