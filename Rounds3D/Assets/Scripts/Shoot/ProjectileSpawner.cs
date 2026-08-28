@@ -31,6 +31,7 @@ public class ProjectileSpawner : MonoBehaviour{
     [SerializeField] RotateForSeconds rotateForSeconds;
     [SerializeField] GameObject gun;
     [SerializeField] ExplosionManager explosionManager;
+    [SerializeField] int playerLayer;
     SpawnState currState;
 
 
@@ -97,7 +98,7 @@ public class ProjectileSpawner : MonoBehaviour{
     void spawnProjectile(){
         GameObject projGO = Instantiate(projToSpawn, spawning.transform.position, spawning.transform.rotation, projectileParent.transform);
         Projectile proj = projGO.GetComponent<Projectile>();
-        proj.init(stats,spawning, shootRotation.forward, explosionManager);
+        proj.init(stats,spawning, shootRotation.forward, explosionManager, playerLayer);
 
         // shake.startShake(1.0f, 200.0f);
     }

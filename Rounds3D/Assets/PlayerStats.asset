@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e60ae37278d32c3e800e33ea6e01397, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  Damage: 0
+  Damage: 50
   RateOfFire: 60
   Health: 340
   Regen: 0
@@ -26,4 +26,4 @@ MonoBehaviour:
   BulletSpeed: 10000
   BulletBounces: 3
   SpeedIncreasePerBounce: 0.5
-  BulletExplosive: 1
+  BulletExplosive: 0

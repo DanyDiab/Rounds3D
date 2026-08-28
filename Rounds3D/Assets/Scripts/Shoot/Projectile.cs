@@ -12,40 +12,32 @@ public class Projectile : MonoBehaviour{
     Collider shooterCollider;
     Vector3 lastVelocity;
     ExplosionManager explosionManager;
+    int playerLayer;
+
+    public delegate void ProjectileCollide(float damage);
+    public static event ProjectileCollide OnProjectileCollide;
 
 
 
-    public void init(PlayerStats playerStats, GameObject shooter, Vector3 shootDirection, ExplosionManager explosionManager){
+    public void init(PlayerStats playerStats, GameObject shooter, Vector3 shootDirection, ExplosionManager explosionManager, int playerLayer){
         numBounced = 0;
         stats = playerStats;
 
         this.shooter = shooter;
         this.explosionManager = explosionManager;
+        this.playerLayer = playerLayer;
         rb = GetComponent<Rigidbody>();
         shooterCollider = shooter.GetComponentInChildren<Collider>();
         
         rb.AddForce(shootDirection.normalized * stats.BulletSpeed);
-
-        Physics.IgnoreCollision(projCollider, shooterCollider, true);
     }
 
     void Update(){
         lastVelocity = rb.velocity;
     }
-    void OnCollisionEnter(Collision collision)
-    {
-        if(numBounced == 0 && collision.gameObject == shooter){
-            Physics.IgnoreCollision(projCollider, shooterCollider, false);
-        }
 
-        numBounced++;
 
-        if(numBounced > stats.BulletBounces){
-            Destroy(gameObject);
-        }
-        
-        // Instantiate(explosionParent);
-        if(stats.BulletExplosive) explosionManager.spawnExplosion(transform.position, 1.0f);
+    void BounceProjectile(Collision collision){
         ContactPoint contact = collision.GetContact(0);
         Vector3 incomingDirection = lastVelocity.normalized;
         float speed = lastVelocity.magnitude;
@@ -55,5 +47,32 @@ public class Projectile : MonoBehaviour{
         rb.velocity = reflectedDirection * speed * stats.SpeedIncreasePerBounce;
         rb.angularVelocity = Vector3.zero;
         transform.forward = reflectedDirection;
+    }
+    void OnCollisionEnter(Collision collision){
+        if(stats.BulletExplosive) explosionManager.spawnExplosion(transform.position, 1.0f);
+
+        // might not work for multiple players? well see :p
+        Debug.Log(collision.gameObject.layer);
+
+        if(collision.gameObject.layer == playerLayer){
+            Debug.Log("player collide");
+            OnProjectileCollide?.Invoke(stats.Damage);   
+            Destroy(gameObject);
+        }
+
+        numBounced++;
+
+        if(numBounced > stats.BulletBounces){
+            Destroy(gameObject);
+        }
+        
+        // Instantiate(explosionParent);
+        BounceProjectile(collision);
+    }
+
+// either enter or exit 
+// becareful with this, if we scale the player up, this requires that the projectile spawns in the player
+    void OnTriggerExit(){
+        projCollider.isTrigger = false;
     }
 }

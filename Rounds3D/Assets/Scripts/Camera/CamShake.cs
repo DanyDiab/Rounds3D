@@ -4,7 +4,7 @@ enum ShakeState {
     SHAKING,
     WAITING
 }
-
+// dont forget to initlize currSTate
 public class CamShake : MonoBehaviour {
     Camera camera;
 
@@ -37,7 +37,6 @@ public class CamShake : MonoBehaviour {
                 camera.transform.rotation = Quaternion.Euler(euler);
 
                 time += Time.deltaTime;
-                Debug.Log("SHAEK");
                 if(time >= shakeTime){
                     currState = ShakeState.WAITING;
                     time = 0.0f;
