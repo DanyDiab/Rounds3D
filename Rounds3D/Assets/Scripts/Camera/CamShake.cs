@@ -15,18 +15,27 @@ public class CamShake : MonoBehaviour {
     float time;
 
     ShakeState currState;
+    [SerializeField] CameraRotation camRotate;
+    QuatRot camRotateQuatRot;
+    Quaternion camRotateQuat;
 
     void Start(){
+        camRotateQuat = Quaternion.identity;
+        camRotateQuatRot = new QuatRot(camRotateQuat);
+
         camera = Camera.main;
+        currState = ShakeState.WAITING;
+
+        startShake(2.0f, 3.0f);
     }
     public void startShake(float shakeTime, float magnitude){
         this.shakeTime = shakeTime;
         this.magnitude = magnitude;
         originalRotation = camera.transform.rotation;
         currState = ShakeState.SHAKING;
+        camRotateQuat = Quaternion.identity;
+        camRotate.AddRotation(camRotateQuatRot);
     }
-
-
 
 // rotatoins are overiding each other. 
     void Update(){
@@ -34,13 +43,14 @@ public class CamShake : MonoBehaviour {
             case ShakeState.SHAKING:{
                 Vector3 randRot = Random.onUnitSphere;
                 Vector3 euler = randRot * magnitude + camera.transform.forward;
-                camera.transform.rotation = Quaternion.Euler(euler);
+                camRotateQuatRot.quat = Quaternion.Euler(euler);
 
                 time += Time.deltaTime;
                 if(time >= shakeTime){
                     currState = ShakeState.WAITING;
                     time = 0.0f;
-                    transform.rotation = originalRotation;
+                    camRotate.SetRotation(originalRotation);
+                    camRotate.RemoveRotation(camRotateQuatRot);
                 }
 
                 break;
