@@ -27,12 +27,8 @@ public class MouseRotate : MonoBehaviour {
         camRotationQuat = Quaternion.identity;
         camRotQuat = new QuatRot(camRotationQuat);
     }
-    void OnEnable(){
+    void Start(){
         camRotate.AddRotation(camRotQuat);
-    }
-
-    void OnDisable(){
-        camRotate.RemoveRotation(camRotQuat);
     }
 
     void Update(){

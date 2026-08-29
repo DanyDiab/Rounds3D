@@ -12,11 +12,15 @@ public class PlayerHealth : MonoBehaviour {
     }
     void OnEnable(){
         Projectile.OnProjectileCollide += takeDamage;
+        ExplosionManager.onExplode += handleExplosion;
     }
 
     void OnDisable(){
         Projectile.OnProjectileCollide -= takeDamage;
+        ExplosionManager.onExplode -= handleExplosion;
+
     }
+
     public void takeDamage(float amount){
         currHealth -= amount;
 
@@ -28,6 +32,15 @@ public class PlayerHealth : MonoBehaviour {
         onDamage?.Invoke(amount / playerStats.Health, currHealth / playerStats.Health);
     }
 
+    void handleExplosion(Vector3 explosionPos, float maxDamageDistance){
+        float dist = (transform.position - explosionPos).magnitude;
 
+        if(dist > maxDamageDistance) return;
 
+        float t = dist / maxDamageDistance;
+
+        float damage = Mathf.Lerp(playerStats.Damage, 0, t);
+
+        takeDamage(damage);
+    }
 }

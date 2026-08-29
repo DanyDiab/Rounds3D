@@ -19,6 +19,12 @@ public class CamShake : MonoBehaviour {
     QuatRot camRotateQuatRot;
     Quaternion camRotateQuat;
 
+    [Header("Explosion Shake Info")]
+    [SerializeField] float minExplosionShakeMag;
+    [SerializeField] float maxExplosionShakeMag;
+    [SerializeField] float explosionShakeTime;
+
+
     void Start(){
         camRotateQuat = Quaternion.identity;
         camRotateQuatRot = new QuatRot(camRotateQuat);
@@ -28,6 +34,14 @@ public class CamShake : MonoBehaviour {
 
         startShake(2.0f, 3.0f);
     }
+
+    void OnEnable(){
+        ExplosionManager.onExplode += handleExplosionShake;
+    }
+    void OnDisable(){
+        ExplosionManager.onExplode -= handleExplosionShake;
+    }
+
     public void startShake(float shakeTime, float magnitude){
         this.shakeTime = shakeTime;
         this.magnitude = magnitude;
@@ -36,6 +50,7 @@ public class CamShake : MonoBehaviour {
         camRotateQuat = Quaternion.identity;
         camRotate.AddRotation(camRotateQuatRot);
     }
+
 
 // rotatoins are overiding each other. 
     void Update(){
@@ -59,5 +74,16 @@ public class CamShake : MonoBehaviour {
                 break;
             }
         }
+    }
+
+    void handleExplosionShake(Vector3 position, float maxDamageDistance){
+        float distanceFromExplosion = (transform.position - position).magnitude;
+
+        if(distanceFromExplosion > maxDamageDistance) return;
+
+        float t = distanceFromExplosion / maxDamageDistance;
+
+        float shakeMagnitude = Mathf.Lerp(maxExplosionShakeMag, minExplosionShakeMag, t);
+        startShake(explosionShakeTime, shakeMagnitude);
     }
 }

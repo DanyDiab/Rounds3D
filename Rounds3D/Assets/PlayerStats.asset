@@ -26,4 +26,4 @@ MonoBehaviour:
   BulletSpeed: 10000
   BulletBounces: 3
   SpeedIncreasePerBounce: 0.5
-  BulletExplosive: 0
+  BulletExplosive: 1
