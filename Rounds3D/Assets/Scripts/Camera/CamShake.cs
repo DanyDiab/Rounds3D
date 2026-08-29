@@ -43,12 +43,25 @@ public class CamShake : MonoBehaviour {
     }
 
     public void startShake(float shakeTime, float magnitude){
-        this.shakeTime = shakeTime;
-        this.magnitude = magnitude;
-        originalRotation = camera.transform.rotation;
-        currState = ShakeState.SHAKING;
-        camRotateQuat = Quaternion.identity;
-        camRotate.AddRotation(camRotateQuatRot);
+
+        switch(currState){
+            case ShakeState.WAITING:{
+                this.shakeTime = shakeTime;
+                this.magnitude = magnitude;
+                originalRotation = camera.transform.rotation;
+                currState = ShakeState.SHAKING;
+                camRotateQuat = Quaternion.identity;
+                camRotate.AddRotation(camRotateQuatRot);
+                break;
+            }
+            // if already shaking, just update values
+            case ShakeState.SHAKING:{
+                this.shakeTime += shakeTime;
+                this.magnitude = Mathf.Max(this.magnitude, magnitude);
+                break;
+            }
+        }
+        
     }
 
 
