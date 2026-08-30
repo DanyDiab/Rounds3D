@@ -4,9 +4,9 @@ using UnityEngine;
 public class CardPicking : MonoBehaviour{
     [SerializeField] int numCards;
 
-    List<GameObject> cards;
+    List<GameObject> cardsToShow;
 
-    [SerializeField] List<GameObject> cardOptions;
+    [SerializeField] PlayerCards playerCards;
     [SerializeField] GameObject parent;
 
 
@@ -15,7 +15,7 @@ public class CardPicking : MonoBehaviour{
     }
 
     void Awake(){
-        cards = new List<GameObject>();
+        cardsToShow = new List<GameObject>();
         populateDisplay();
     }
 
@@ -28,13 +28,13 @@ public class CardPicking : MonoBehaviour{
 
     void populateCards(){
         for(int i = 0; i < numCards; i++){
-            int randChoice = Random.Range(0, cardOptions.Count);
-            cards.Add(cardOptions[randChoice]);
+            int randChoice = Random.Range(0, playerCards.allOptions.Count);
+            cardsToShow.Add(playerCards.allOptions[randChoice].gameObject);
         }
     }
 
     void clearAllCards(){
-        cards.Clear();
+        cardsToShow.Clear();
         for(int i = parent.transform.childCount - 1; i >= 0; i--){
             Transform child = parent.transform.GetChild(i);
             if(child == null){
@@ -56,10 +56,10 @@ public class CardPicking : MonoBehaviour{
 
         Vector2 spacing = new Vector2(xWidth, 0);
 
-        Vector2 startingPos = centerScreen - (spacing * (cards.Count / 2));
+        Vector2 startingPos = centerScreen - (spacing * (cardsToShow.Count / 2));
  
         int idx = 0;
-        foreach(GameObject card in cards){
+        foreach(GameObject card in cardsToShow){
 
             Vector2 pos = startingPos + (spacing * idx);
             Instantiate(card, pos, Quaternion.identity,parent.transform);

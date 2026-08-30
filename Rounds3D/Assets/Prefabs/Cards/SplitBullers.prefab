@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3662351313058684531}
   - component: {fileID: 121090665448818677}
   - component: {fileID: 2385448176531493101}
+  - component: {fileID: 8989584777928501216}
   m_Layer: 5
   m_Name: SplitBullers
   m_TagString: Untagged
@@ -105,11 +106,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bcee0e8acd5f8734af0525126734190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontFace: {fileID: 4023055995418660913}
-  backFace: {fileID: 8012497769960205907}
   playerStats: {fileID: 11400000, guid: d8d68758e7e942b099a357ef169002b6, type: 2}
+  playerCards: {fileID: 0}
   ammoMultiplier: 2
   DamageMultiplier: 0.5
+--- !u!114 &8989584777928501216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337360572352394897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd01c4cba5a75c149d7945ead858f97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontFace: {fileID: 4023055995418660913}
+  backFace: {fileID: 8012497769960205907}
+  card: {fileID: 2385448176531493101}
 --- !u!1 &1463087963398910230
 GameObject:
   m_ObjectHideFlags: 0

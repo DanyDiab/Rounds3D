@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerStats", menuName = "PlayerStats")]
+[CreateAssetMenu(fileName = "PlayerStats", menuName = "Player/PlayerStats")]
 public class PlayerStats : ScriptableObject{
     [Header("DPS")]
     public float Damage;

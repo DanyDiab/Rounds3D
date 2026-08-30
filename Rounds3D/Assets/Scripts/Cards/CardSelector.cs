@@ -10,8 +10,7 @@ public class CardSelector : MonoBehaviour{
 
     [SerializeField] float selectedScale;
     [SerializeField] Transform targetSelectPos;
-    [SerializeField] PlayerStats stats;
-    List<Card> cards;
+    List<CardUI> cards;
 
     int selectedIndex = 0;
 
@@ -21,6 +20,11 @@ public class CardSelector : MonoBehaviour{
 
     List<InputAction> actions;
     [SerializeField] InputActionAsset inputActions;
+
+    [Header("Player Info")]
+    [SerializeField] PlayerStats stats;
+    [SerializeField] PlayerCards playerCards;
+
 
     int numPicked;
 
@@ -37,8 +41,8 @@ public class CardSelector : MonoBehaviour{
         }
     }
 
-    List<Card> grabCards() {
-        cards = cardParent.GetComponentsInChildren<Card>().ToList();
+    List<CardUI> grabCards() {
+        cards = cardParent.GetComponentsInChildren<CardUI>().ToList();
         return cards;
     }
 
@@ -63,7 +67,7 @@ public class CardSelector : MonoBehaviour{
 
     void UpdateCardScales(){
         int idx = 0;
-        foreach(Card card in cards){
+        foreach(CardUI card in cards){
             float newScale = idx == selectedIndex ? selectedScale : 1.0f;
             card.gameObject.transform.localScale = Vector3.one * newScale;
             idx++;
@@ -73,9 +77,10 @@ public class CardSelector : MonoBehaviour{
     bool SelectCurrentCard(){
         if(!ButtonPressUtil.Pressed(selectAction)) return false;
 
-        Card card = cards[selectedIndex];
+        CardUI card = cards[selectedIndex];
 
-        card.ApplyEffect();
+        playerCards.currCards.Add(cards[selectedIndex].card);
+        card.card.ApplyEffect();
 
         GOTransforms.TranslateToTarget translator = card.gameObject.AddComponent<GOTransforms.TranslateToTarget>();
         
@@ -95,12 +100,12 @@ public class CardSelector : MonoBehaviour{
     void yeetRemainingCards(){
         float distance = 1000.0f;
         float time = 3.0f;
-        foreach(Card card in cards){
+        foreach(CardUI card in cards){
             Vector3 randomDir = Random.onUnitSphere;
             Vector3 randomRot = Random.onUnitSphere;
 
             GOTransforms.TranslateToTarget translator = card.gameObject.AddComponent<GOTransforms.TranslateToTarget>();
-            translator.Init(card.transform,(distance * randomDir) + card.transform.position,timeToTake: time);
+            translator.Init(card.transform,(distance * randomDir) + card.transform.position,timeToTake: time, easingType: EasingType.EaseOutQuart);
 
             GOTransforms.RotateToTarget rotator = card.gameObject.AddComponent<GOTransforms.RotateToTarget>();
             rotator.Init(randomDir * distance,card.transform, timeToTake: time);
@@ -110,6 +115,7 @@ public class CardSelector : MonoBehaviour{
 
     void Update(){
         if((cards?.Count ?? 0) == 0) return;
+
         if(numPicked >= stats.CardsToPick){
             yeetRemainingCards();
             Destroy(this);

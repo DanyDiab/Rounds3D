@@ -1,5 +1,5 @@
 using UnityEngine;
-public class MagiciansRabbit : Card {
+public class Abundance : Card {
     [SerializeField] float increaseCardSize;
     public override void ApplyEffect()
     {

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3662351313058684531}
   - component: {fileID: 121090665448818677}
   - component: {fileID: 6039702047721613035}
+  - component: {fileID: -1269173641808469210}
   m_Layer: 5
   m_Name: LightWeight
   m_TagString: Untagged
@@ -105,11 +106,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e603edfa085134894880d623bf9ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontFace: {fileID: 4023055995418660913}
-  backFace: {fileID: 8012497769960205907}
   playerStats: {fileID: 11400000, guid: d8d68758e7e942b099a357ef169002b6, type: 2}
+  playerCards: {fileID: 0}
   healthDecrease: 20
   speedIncrease: 20
+--- !u!114 &-1269173641808469210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337360572352394897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd01c4cba5a75c149d7945ead858f97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontFace: {fileID: 4023055995418660913}
+  backFace: {fileID: 8012497769960205907}
+  card: {fileID: 6039702047721613035}
 --- !u!1 &1463087963398910230
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +431,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -2.5000038}
+  m_AnchoredPosition: {x: 0, y: -2.5}
   m_SizeDelta: {x: -10, y: -5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &469287734795622316

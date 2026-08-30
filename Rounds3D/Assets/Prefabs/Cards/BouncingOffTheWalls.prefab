@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3662351313058684531}
   - component: {fileID: 121090665448818677}
   - component: {fileID: 4141487832501526973}
+  - component: {fileID: -331060286499137921}
   m_Layer: 5
   m_Name: BouncingOffTheWalls
   m_TagString: Untagged
@@ -105,11 +106,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5605687b003f14628ac4f50639b9b27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontFace: {fileID: 4023055995418660913}
-  backFace: {fileID: 8012497769960205907}
   playerStats: {fileID: 11400000, guid: d8d68758e7e942b099a357ef169002b6, type: 2}
+  playerCards: {fileID: 0}
   increasePerBounce: 10
   numBouceIncrease: 3
+--- !u!114 &-331060286499137921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337360572352394897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd01c4cba5a75c149d7945ead858f97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontFace: {fileID: 4023055995418660913}
+  backFace: {fileID: 8012497769960205907}
+  card: {fileID: 4141487832501526973}
 --- !u!1 &1463087963398910230
 GameObject:
   m_ObjectHideFlags: 0
