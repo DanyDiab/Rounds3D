@@ -34,6 +34,9 @@ public class ProjectileSpawner : MonoBehaviour{
     [SerializeField] int playerLayer;
     SpawnState currState;
 
+    public delegate void ReloadEvent();
+    public static event ReloadEvent OnReload;
+
 
     void OnEnable(){
         shootAction.Enable();
@@ -60,6 +63,7 @@ public class ProjectileSpawner : MonoBehaviour{
 
     IEnumerator Reload(){
         currState = SpawnState.RELOADING;
+        OnReload?.Invoke();
         yield return new WaitForSeconds(stats.ReloadTimeMS / 1000.0f);
         shotNumber = 0;
         currState = SpawnState.READY;

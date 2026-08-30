@@ -1933,8 +1933,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camRotate: {fileID: 2008759164}
-  minExplosionShakeMag: 0.5
-  maxExplosionShakeMag: 3
+  minExplosionShakeMag: 0.2
+  maxExplosionShakeMag: 2
   explosionShakeTime: 0.5
 --- !u!114 &2008759163
 MonoBehaviour:

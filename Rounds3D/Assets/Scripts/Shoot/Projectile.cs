@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour{
 
     Rigidbody rb;
     [SerializeField] Collider projCollider;
+    [SerializeField] ProjSize size;
     Collider shooterCollider;
     Vector3 lastVelocity;
     ExplosionManager explosionManager;
@@ -30,6 +31,7 @@ public class Projectile : MonoBehaviour{
         shooterCollider = shooter.GetComponentInChildren<Collider>();
         
         rb.AddForce(shootDirection.normalized * stats.BulletSpeed);
+        size.init(playerStats);
     }
 
     void Update(){
@@ -49,7 +51,7 @@ public class Projectile : MonoBehaviour{
         transform.forward = reflectedDirection;
     }
     void OnCollisionEnter(Collision collision){
-        if(stats.BulletExplosive) explosionManager.spawnExplosion(transform.position, 1.0f);
+        if(stats.BulletExplosive) explosionManager.spawnExplosion(transform.position, 5.0f);
 
         // might not work for multiple players? well see :p
         Debug.Log(collision.gameObject.layer);

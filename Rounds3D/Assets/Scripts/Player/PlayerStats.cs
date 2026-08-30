@@ -21,6 +21,7 @@ public class PlayerStats : ScriptableObject{
     
     [Header("Misc")]
     public float CardsToPick;
+    public float CardPoolSize;
 
     [Header("Reload")]
     public float Ammo;
