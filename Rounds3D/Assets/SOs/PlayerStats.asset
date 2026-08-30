@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e60ae37278d32c3e800e33ea6e01397, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  Damage: 50
+  Damage: 200
   RateOfFire: 60
   Health: 340
   Regen: 0
   Speed: 25
   JumpForce: 2000
   dashForce: 10000
+  dashCooldownMS: 5
   Stamina: 3
   StaminaRegen: 0
   CardsToPick: 2

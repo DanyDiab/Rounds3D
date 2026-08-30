@@ -17,6 +17,8 @@ public class PlayerStats : ScriptableObject{
     public float Speed;
     public float JumpForce;
     public float dashForce;
+    public float dashCooldownMS;
+    // not sure if i will use
     public float Stamina;
     public float StaminaRegen;
     
