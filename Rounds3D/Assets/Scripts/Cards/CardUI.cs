@@ -7,7 +7,7 @@ public class CardUI : MonoBehaviour{
 
     CardState cardState;
 
-    [SerializeField] public Card card;
+    public Card card;
 
     void Update(){
         if(cardState != CardState.FLIPPING) return;
@@ -16,9 +16,9 @@ public class CardUI : MonoBehaviour{
     }
 
     void Start(){
+        card = GetComponent<Card>();
         ShowFace(CardState.HIDDEN);
     }
-
 
     public void FlipCard(){
         if(cardState == CardState.SHOWN) return;

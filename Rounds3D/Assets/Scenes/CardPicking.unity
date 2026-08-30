@@ -803,13 +803,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currCards: []
   allOptions:
+  - {fileID: 2821193685731050594, guid: 58e35de02654dfc349f50c8e2f138eeb, type: 3}
   - {fileID: 4141487832501526973, guid: 17f35a7c6181cf4f8a429b5fb56bd3a4, type: 3}
   - {fileID: 7391700376070915229, guid: e641780ccebc2605a8e0c859f6f59fed, type: 3}
+  - {fileID: 303367824727649002, guid: b16471246c45f30d88a7f0b95c1e8bbd, type: 3}
   - {fileID: 4762374243679082905, guid: 25e6bfae2032f7d198248d204cc71377, type: 3}
   - {fileID: 8037784925348120494, guid: ac64968fb176afe299edc07dbd783d97, type: 3}
   - {fileID: 6039702047721613035, guid: 2295112f6f3959a039fa4aad84677233, type: 3}
   - {fileID: 3070895269651958879, guid: c281d79c30e6a15f6b0993be346431a9, type: 3}
+  - {fileID: 2705118841514902881, guid: e8604431c0c569a1bbce6cc3a4b84d0e, type: 3}
   - {fileID: 1389047319046388641, guid: 6fbcab0ead94540279697a38834cd45c, type: 3}
+  - {fileID: 690042169859902378, guid: 9b515e61154403795bd63eada2187917, type: 3}
   - {fileID: 7658411333527922538, guid: 1dbed291216e5bde2a0bbba36083b3e8, type: 3}
   - {fileID: 2385448176531493101, guid: ddaf1ff118b37cfa1aa262bece22bf66, type: 3}
   - {fileID: 4125242363926972621, guid: 7c058875e198c6691b85f521365410fd, type: 3}

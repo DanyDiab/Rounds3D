@@ -18,9 +18,11 @@ MonoBehaviour:
   Regen: 0
   Speed: 25
   JumpForce: 2000
+  dashForce: 10000
   Stamina: 3
   StaminaRegen: 0
   CardsToPick: 2
+  CardPoolSize: 0
   Ammo: 5
   ReloadTimeMS: 2000
   BulletSpeed: 10000

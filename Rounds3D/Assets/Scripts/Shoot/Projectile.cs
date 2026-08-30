@@ -15,6 +15,8 @@ public class Projectile : MonoBehaviour{
     ExplosionManager explosionManager;
     int playerLayer;
 
+    float damage;
+
     public delegate void ProjectileCollide(float damage);
     public static event ProjectileCollide OnProjectileCollide;
 
@@ -32,6 +34,7 @@ public class Projectile : MonoBehaviour{
         
         rb.AddForce(shootDirection.normalized * stats.BulletSpeed);
         size.init(playerStats);
+        damage = playerStats.Damage;
     }
 
     void Update(){
@@ -58,7 +61,7 @@ public class Projectile : MonoBehaviour{
 
         if(collision.gameObject.layer == playerLayer){
             Debug.Log("player collide");
-            OnProjectileCollide?.Invoke(stats.Damage);   
+            OnProjectileCollide?.Invoke(damage);   
             Destroy(gameObject);
         }
 

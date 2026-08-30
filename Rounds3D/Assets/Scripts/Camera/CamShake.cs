@@ -31,8 +31,6 @@ public class CamShake : MonoBehaviour {
 
         camera = Camera.main;
         currState = ShakeState.WAITING;
-
-        startShake(2.0f, 3.0f);
     }
 
     void OnEnable(){

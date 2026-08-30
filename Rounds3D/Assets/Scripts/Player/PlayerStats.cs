@@ -16,6 +16,7 @@ public class PlayerStats : ScriptableObject{
     [Header("Movement")]
     public float Speed;
     public float JumpForce;
+    public float dashForce;
     public float Stamina;
     public float StaminaRegen;
     
